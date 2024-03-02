@@ -25,14 +25,8 @@ namespace CompilerDemo
         public ICommand OpenCommand { get; }
         public ICommand SaveCommand { get; }
         public ICommand SaveAsCommand { get; }
-        public ICommand UndoCommand { get; }
-        public ICommand RedoCommand { get; }
-        public ICommand CutCommand { get; }
-        public ICommand CopyCommand { get; }
-        public ICommand PasteCommand { get; }
         public ICommand DeleteCommand { get; }
-        public ICommand SelectAllCommand { get; }
-        public ICommand ExitCommand { get; private set; }
+        public ICommand ExitCommand { get; }
         public ICommand ReferenceCommand { get; }
         public ICommand AboutProgramCommand { get; }
 
@@ -42,13 +36,7 @@ namespace CompilerDemo
             OpenCommand = new RelayCommand(TryOpen);
             SaveCommand = new RelayCommand(Save);
             SaveAsCommand = new RelayCommand(SaveAs);
-            UndoCommand = new RelayCommand(Undo);
-            RedoCommand = new RelayCommand(Redo);
-            CutCommand = new RelayCommand(Cut);
-            CopyCommand = new RelayCommand(Copy);
-            PasteCommand = new RelayCommand(Paste);
             DeleteCommand = new RelayCommand(Delete);
-            SelectAllCommand = new RelayCommand(SelectAll);
             ExitCommand = new RelayCommand(Exit);
             ReferenceCommand = new RelayCommand(Reference);
             AboutProgramCommand = new RelayCommand(AboutProgram);
@@ -83,11 +71,9 @@ namespace CompilerDemo
         {
             if (File.Exists(path))
             {
-                RichTextBox rtb = ((MainWindow)System.Windows.Application.Current.MainWindow).RTB;
-                TextRange doc = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd);
-                File.WriteAllText(path, doc.Text);
+                File.WriteAllText(path, Text);
             }
-            else Create();
+            else SaveAs();
         }
         private void TryOpen()
         {
@@ -170,46 +156,11 @@ namespace CompilerDemo
             Environment.Exit(0);
         }
 
-        private void Undo()
-        {
-
-        }
-
-        private void Redo()
-        {
-            RichTextBox rtb = ((MainWindow)System.Windows.Application.Current.MainWindow).RTB;
-            rtb.Redo();
-        }
-
-        private void Cut()
-        {
-            RichTextBox rtb = ((MainWindow)System.Windows.Application.Current.MainWindow).RTB;
-            rtb.Cut();
-        }
-
-        private void Copy()
-        {
-            RichTextBox rtb = ((MainWindow)System.Windows.Application.Current.MainWindow).RTB;
-            rtb.Copy();
-        }
-
-        private void Paste()
-        {
-            RichTextBox rtb = ((MainWindow)System.Windows.Application.Current.MainWindow).RTB;
-            rtb.Paste();
-        }
-
         private void Delete()
         {
-            RichTextBox rtb = ((MainWindow)System.Windows.Application.Current.MainWindow).RTB;
-            rtb.Document.Blocks.Clear();
+            Text = string.Empty;
         }
 
-        private void SelectAll()
-        {
-            RichTextBox rtb = ((MainWindow)System.Windows.Application.Current.MainWindow).RTB;
-            rtb.SelectAll();
-        }
         private void Reference()
         {
             var p = new Process();
@@ -221,40 +172,11 @@ namespace CompilerDemo
         }
         private void AboutProgram()
         {
-
             AboutProgramWindow window = new AboutProgramWindow();
             window.DataContext = this;
             window.Show();
         }
-
-    }
-    public class RelayCommand : ICommand
-    {
-        private readonly Action _execute;
-        private readonly Func<bool> _canExecute;
-
-        public RelayCommand(Action execute, Func<bool> canExecute = null)
-        {
-            _execute = execute;
-            _canExecute = canExecute;
-        }
-
-        public bool CanExecute(object parameter)
-        {
-            return _canExecute?.Invoke() ?? true;
-        }
-
-        public void Execute(object parameter)
-        {
-            _execute?.Invoke();
-        }
-
-        public event EventHandler CanExecuteChanged
-        {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
-        }
-    }
+    }  
 }
 
 

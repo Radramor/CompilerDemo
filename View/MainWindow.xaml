@@ -18,12 +18,12 @@
             </MenuItem>
             <MenuItem Header="Правка">
                 <MenuItem Header="Отменить" Command="ApplicationCommands.Undo"/>
-                <MenuItem Header="Повторить" Command="{Binding RedoCommand}"/>
-                <MenuItem Header="Вырезать" Command="{Binding CutCommand}"/>
-                <MenuItem Header="Копировать" Command="{Binding CopyCommand}"/>
-                <MenuItem Header="Вставить" Command="{Binding PasteCommand}"/>
+                <MenuItem Header="Повторить" Command="ApplicationCommands.Redo"/>
+                <MenuItem Header="Вырезать" Command="ApplicationCommands.Cut"/>
+                <MenuItem Header="Копировать" Command="ApplicationCommands.Copy"/>
+                <MenuItem Header="Вставить" Command="ApplicationCommands.Paste"/>
                 <MenuItem Header="Удалить" Command="{Binding DeleteCommand}"/>
-                <MenuItem Header="Выделить все" Command="{Binding SelectAllCommand}"/>
+                <MenuItem Header="Выделить все" Command="ApplicationCommands.SelectAll"/>
             </MenuItem>
             <MenuItem Header="Текст">
                 <MenuItem Header="Постановка задачи"/>
@@ -56,16 +56,16 @@
                 <Button Width="48" Height="50" ToolTip="Отменить" Margin="100 0 0 0" Command="ApplicationCommands.Undo">
                     <Image Source="../Resources/Undo.png" Height="40" Width="38"/>
                 </Button>
-                <Button Width="48" Height="50" ToolTip="Вернуть" Command="{Binding RedoCommand}">
+                <Button Width="48" Height="50" ToolTip="Вернуть" Command="ApplicationCommands.Redo">
                     <Image Source="../Resources/Redo.png" Height="40" Width="38"/>
                 </Button>
-                <Button Width="48" Height="50" ToolTip="Копировать" Command="{Binding CopyCommand}">
+                <Button Width="48" Height="50" ToolTip="Копировать" Command="ApplicationCommands.Copy">
                     <Image Source="../Resources/Copy.png" Height="40" Width="38"/>
                 </Button>
-                <Button Width="48" Height="50" ToolTip="Вырезать" Command="{Binding CutCommand}">
+                <Button Width="48" Height="50" ToolTip="Вырезать" Command="ApplicationCommands.Cut">
                     <Image Source="../Resources/Cut.png" Height="40" Width="38"/>
                 </Button>
-                <Button Width="48" Height="50" ToolTip="Вставить" Command="{Binding PasteCommand}">
+                <Button Width="48" Height="50" ToolTip="Вставить" Command="ApplicationCommands.Paste">
                     <Image Source="../Resources/Paste.png" Height="40" Width="38"/>
                 </Button>
                 <Image Source="../Resources/Size.png" Margin="20 0 0 0" Height="40" Width="38"/>
