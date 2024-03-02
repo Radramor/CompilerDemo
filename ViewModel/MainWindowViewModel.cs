@@ -1,29 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CompilerDemo.View;
+using Microsoft.Win32;
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Input;
 
 namespace CompilerDemo
 {
-    using CompilerDemo.View;
-    using Microsoft.Win32;
-    using System;
-    using System.Diagnostics;
-    using System.IO;
-    using System.Text;
-    using System.Windows;
-    using System.Windows.Controls;
-    using System.Windows.Documents;
-    using System.Windows.Input;
-    using System.Windows.Navigation;
-    using System.Xml.Serialization;
-
     class MainWindowViewModel : ViewModelBase
     {
-        private string _inputText;
-        private string _outputText;
-        private string path = "";
+        private string path = string.Empty;
+        private string _text;
+
+        public string Text
+        {
+            get { return _text; }
+            set { _text = value; OnPropertyChanged(); }
+        }
+
         public ICommand CreateCommand { get; }
         public ICommand OpenCommand { get; }
         public ICommand SaveCommand { get; }
@@ -39,20 +36,8 @@ namespace CompilerDemo
         public ICommand ReferenceCommand { get; }
         public ICommand AboutProgramCommand { get; }
 
-        public string OutputText
-        {
-            get { return _outputText; }
-            set { _outputText = value; OnPropertyChanged(); }
-        }
-
-        public string InputText
-        {
-            get { return _inputText; }
-            set { _inputText = value; OnPropertyChanged(); }
-        }
         public MainWindowViewModel()
         {
-
             CreateCommand = new RelayCommand(Create);
             OpenCommand = new RelayCommand(TryOpen);
             SaveCommand = new RelayCommand(Save);
@@ -71,10 +56,7 @@ namespace CompilerDemo
 
         private void Create()
         {
-
-            RichTextBox rtb = ((MainWindow)System.Windows.Application.Current.MainWindow).RTB;
-            TextRange doc = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd);
-            if (string.IsNullOrWhiteSpace(doc.Text)) return;
+            if (string.IsNullOrWhiteSpace(Text)) return;
             var result = MessageBox.Show("Вы хотите сохранить изменения в файле?", "Компилятор", MessageBoxButton.YesNoCancel, MessageBoxImage.None, MessageBoxResult.Yes);
             switch (result)
             {
@@ -84,13 +66,13 @@ namespace CompilerDemo
                     if (saveFileDialog.ShowDialog() == true)
                     {
                         path = saveFileDialog.FileName;
-                        File.WriteAllText(path, doc.Text);
-                        rtb.Document.Blocks.Clear();
+                        File.WriteAllText(path, Text);
+                        Text = string.Empty;
                     }
                     break;
 
                 case MessageBoxResult.No:
-                    rtb.Document.Blocks.Clear();
+                    Text = string.Empty;
                     break;
 
                 case MessageBoxResult.Cancel:
@@ -109,9 +91,7 @@ namespace CompilerDemo
         }
         private void TryOpen()
         {
-            RichTextBox rtb = ((MainWindow)System.Windows.Application.Current.MainWindow).RTB;
-            TextRange doc = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd);
-            if (!string.IsNullOrWhiteSpace(doc.Text) && !File.Exists(path))
+            if (!string.IsNullOrWhiteSpace(Text) && !File.Exists(path))
             {
                 var result = MessageBox.Show("Вы хотите сохранить изменения в файле?", "Компилятор",
                     MessageBoxButton.YesNoCancel, MessageBoxImage.None, MessageBoxResult.Yes);
@@ -123,23 +103,22 @@ namespace CompilerDemo
                         if (saveFileDialog.ShowDialog() == true)
                         {
                             path = saveFileDialog.FileName;
-                            File.WriteAllText(path, doc.Text);
-                            rtb.Document.Blocks.Clear();
+                            File.WriteAllText(path, Text);
+                            Text = string.Empty;
                             Open();
                         }
                         break;
 
                     case MessageBoxResult.No:
-                        rtb.Document.Blocks.Clear();
+                        Text = string.Empty;
                         Open();
                         break;
 
                     case MessageBoxResult.Cancel:
                         return;
-                        break;
                 }
             }
-            else if (!string.IsNullOrWhiteSpace(doc.Text) && File.Exists(path))
+            else if (!string.IsNullOrWhiteSpace(Text) && File.Exists(path))
             {
                 var result = MessageBox.Show("Вы хотите сохранить изменения в файле \n" + path + "?", "Компилятор",
                     MessageBoxButton.YesNoCancel, MessageBoxImage.None, MessageBoxResult.Yes);
@@ -147,13 +126,13 @@ namespace CompilerDemo
                 {
                     case MessageBoxResult.Yes:
 
-                        File.WriteAllText(path, doc.Text);
-                        rtb.Document.Blocks.Clear();
+                        File.WriteAllText(path, Text);
+                        Text = string.Empty;
                         Open();
                         break;
 
                     case MessageBoxResult.No:
-                        rtb.Document.Blocks.Clear();
+                        Text = string.Empty;
                         Open();
                         break;
 
@@ -165,7 +144,6 @@ namespace CompilerDemo
         }
         private void Open()
         {
-            RichTextBox rtb = ((MainWindow)System.Windows.Application.Current.MainWindow).RTB;
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.InitialDirectory = "c:\\";
             openFileDialog.Filter = "Текстовые файлы (*.txt)|*.txt|Все файлы (*.*)|*.*";
@@ -173,20 +151,18 @@ namespace CompilerDemo
             if (openFileDialog.ShowDialog() == true)
             {
                 path = openFileDialog.FileName;
-                string Text = File.ReadAllText(path);
-                rtb.AppendText(Text);
+                string buffer = File.ReadAllText(path);
+                Text = buffer;
             }
         }
         private void SaveAs()
         {
-            RichTextBox rtb = ((MainWindow)System.Windows.Application.Current.MainWindow).RTB;
-            TextRange doc = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd);
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "Текстовые файлы (*.txt)|*.txt|Все файлы (*.*)|*.*";
             if (saveFileDialog.ShowDialog() == true)
             {
                 path = saveFileDialog.FileName;
-                File.WriteAllText(path, doc.Text);
+                File.WriteAllText(path, Text);
             }
         }
         private void Exit()
@@ -196,8 +172,7 @@ namespace CompilerDemo
 
         private void Undo()
         {
-            RichTextBox rtb = ((MainWindow)System.Windows.Application.Current.MainWindow).RTB;
-            rtb.Undo();
+
         }
 
         private void Redo()
@@ -251,6 +226,7 @@ namespace CompilerDemo
             window.DataContext = this;
             window.Show();
         }
+
     }
     public class RelayCommand : ICommand
     {
