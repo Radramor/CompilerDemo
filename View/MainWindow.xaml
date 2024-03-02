@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CompilerDemo" 
+        xmlns:local="clr-namespace:CompilerDemo"
         mc:Ignorable="d"
         Title="Компилятор" Height="450" Width="800"
         MinHeight="450" MinWidth="800">
@@ -17,7 +17,7 @@
                 <MenuItem Header="Выход" InputGestureText="Alt+F4" Command="{Binding ExitCommand}"  />
             </MenuItem>
             <MenuItem Header="Правка">
-                <MenuItem Header="Отменить" Command="{Binding UndoCommand}"/>
+                <MenuItem Header="Отменить" Command="ApplicationCommands.Undo"/>
                 <MenuItem Header="Повторить" Command="{Binding RedoCommand}"/>
                 <MenuItem Header="Вырезать" Command="{Binding CutCommand}"/>
                 <MenuItem Header="Копировать" Command="{Binding CopyCommand}"/>
@@ -53,7 +53,7 @@
                 <Button Width="48" Height="50" ToolTip="Сохранить" Command="{Binding SaveCommand}">
                     <Image Source="../Resources/Save.png" Height="40" Width="38"/>
                 </Button>
-                <Button Width="48" Height="50" ToolTip="Отменить" Margin="100 0 0 0" Command="{Binding UndoCommand}">
+                <Button Width="48" Height="50" ToolTip="Отменить" Margin="100 0 0 0" Command="ApplicationCommands.Undo">
                     <Image Source="../Resources/Undo.png" Height="40" Width="38"/>
                 </Button>
                 <Button Width="48" Height="50" ToolTip="Вернуть" Command="{Binding RedoCommand}">
@@ -84,7 +84,8 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <RichTextBox x:Name="RTB" Margin="10,10,10,10" Padding="5" Grid.Row="0" AllowDrop="True"/>
+            <RichTextBox x:Name="RTB" Margin="10,10,10,10" Padding="5" Grid.Row="0" AllowDrop="True"
+                         local:RichTextBoxHelper.DocumentXaml="{Binding Text}"/>
             <TabControl Margin="10,10,10,10" Padding="5" Grid.Row="1" >
                 <TabItem Header="Вывод">
                     <TextBox x:Name="TB" IsReadOnly="True" Text="Hello World!"/>
