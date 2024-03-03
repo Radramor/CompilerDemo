@@ -24,7 +24,7 @@
 
   <h3>Интерфейс текстового редактора</h3>
   <p>Главное окно программы</p>
-  <img src="bin/Debug/net7.0-windows/Readme/Example.png" alt="Рабочее окно текстового редактора с обозначенными элементами.">
+  <img src="Readme/Example.png" alt="Рабочее окно текстового редактора с обозначенными элементами.">
   
   <h3>Получившийся текстовый редактор имеет следующие элементы:</h3>
   <ol>
@@ -38,15 +38,15 @@
       </tr>
       <tr>
         <td>Файл</td>
-        <td><img src="bin/Debug/net7.0-windows/Readme/File.png" alt="File"></td>
+        <td><img src="Readme/File.png" alt="File"></td>
       </tr>
       <tr>
         <td>Правка</td>
-        <td><img src="bin/Debug/net7.0-windows/Readme/Edit.png" alt="Edit"></td>
+        <td><img src="Readme/Edit.png" alt="Edit"></td>
       </tr>
       <tr>
         <td>Текст</td>
-        <td><img src="bin/Debug/net7.0-windows/Readme/Text.png" alt="Text"></td>
+        <td><img src="Readme/Text.png" alt="Text"></td>
       </tr>
       <tr>
         <td>Пуск</td>
@@ -54,11 +54,11 @@
       </tr>
       <tr>
         <td>Справка</td>
-        <td><img src="bin/Debug/net7.0-windows/Readme/Reference.png" alt="Reference"></td>
+        <td><img src="Readme/Reference.png" alt="Reference"></td>
       </tr>
     </table>
     <li value="3">Панель инструментов</li>
-	<img src="bin/Debug/net7.0-windows/Readme/Toolbar.png" alt="Toolbar">
+	<img src="Readme/Toolbar.png" alt="Toolbar">
       <ul>
         <li>Создать</li>
         <li>Открыть</li>
@@ -93,11 +93,11 @@
       </tr>
       <tr>
         <td>Вызов справки</td>
-        <td><img src="bin/Debug/net7.0-windows/Readme/Information.png" alt="Information"></td>
+        <td><img src="Readme/Information.png" alt="Information"></td>
       </tr>
       <tr>
         <td>О программе</td>
-        <td><img src="bin/Debug/net7.0-windows/Readme/About.png" alt="About"></td>
+        <td><img src="Readme/About.png" alt="About"></td>
       </tr>
     </table>
     <h3>Вывод сообщений</h3>
@@ -157,10 +157,10 @@
   </pre>
 
   <h3>Диаграмма состояний сканера</h3>
-  <img src="bin/Debug/net7.0-windows/Readme/compile.png" alt="Диаграмма состояний сканера">
+  <img src="Readme/compile.png" alt="Диаграмма состояний сканера">
 
   <h3>Тестовый пример</h3>
   <h4>Тест. Пример, показывающий все возможные лексемы, которые могут быть найдены лексическим анализатором.</h4>
-  <img src="bin/Debug/net7.0-windows/Readme/Test.png" alt="Тест">
+  <img src="Readme/Test.png" alt="Тест">
 </body>
 </html>
