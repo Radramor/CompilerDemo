@@ -59,6 +59,9 @@
                 <Button Width="48" Height="50" ToolTip="Вернуть" Command="ApplicationCommands.Redo">
                     <Image Source="../Resources/Redo.png" Height="40" Width="38"/>
                 </Button>
+                <Button Width="48" Height="50" ToolTip="Запустить" Margin="10 0 10 0" Command="{Binding ScanCommand}">
+                    <Image Source="../Resources/Run.png" Height="40" Width="38"/>
+                </Button>
                 <Button Width="48" Height="50" ToolTip="Копировать" Command="ApplicationCommands.Copy">
                     <Image Source="../Resources/Copy.png" Height="40" Width="38"/>
                 </Button>
@@ -82,11 +85,16 @@
         <Grid DockPanel.Dock="Bottom" VerticalAlignment="Stretch">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <RichTextBox x:Name="RTB" Margin="10,10,10,10" Padding="5" Grid.Row="0" AllowDrop="True"
-                         local:RichTextBoxHelper.DocumentXaml="{Binding Text}"/>
-            <TabControl Margin="10,10,10,10" Padding="5" Grid.Row="1" >
+            <RichTextBox x:Name="RTB" Margin="10,10,10,10" Padding="5" Grid.Row="0"  AllowDrop="True"
+                         local:RichTextBoxHelper.DocumentXaml="{Binding Text}" Block.LineHeight="1"
+                         VerticalScrollBarVisibility="Visible"/>
+
+            <GridSplitter Margin="3,3,3,3" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="5"/>
+
+            <TabControl Margin="10,10,10,10" Padding="5" Grid.Row="2">
                 <TabItem Header="Вывод">
                     <TextBox x:Name="TB" IsReadOnly="True" Text="Hello World!"/>
                 </TabItem>
@@ -98,6 +106,17 @@
                             <DataGridTextColumn Header="Линия"/>
                             <DataGridTextColumn Header="Столбец"/>
                             <DataGridTextColumn Header="Сообщение" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </TabItem>
+                <TabItem Header="Вывод анализатора">
+                    <DataGrid IsReadOnly="True" ItemsSource="{Binding TokenViewModels}" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Условный код" Binding="{Binding Code}"/>
+                            <DataGridTextColumn Header="Тип лексемы " Width="*" Binding="{Binding TokenType}"/>
+                            <DataGridTextColumn Header="Лексема" Width="*" Binding="{Binding RawToken}"/>
+                            <DataGridTextColumn Header="Начало лексемы" Width="*" Binding="{Binding StartIndex}"/>
+                            <DataGridTextColumn Header="Конец лексемы" Width="*" Binding="{Binding EndIndex}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </TabItem>

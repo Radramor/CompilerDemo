@@ -3,6 +3,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using CompilerDemo.ViewModel;
 
 
 namespace CompilerDemo

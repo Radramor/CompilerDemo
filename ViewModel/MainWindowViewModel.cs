@@ -1,6 +1,9 @@
-﻿using CompilerDemo.View;
+﻿using CompilerDemo.Model;
+using CompilerDemo.View;
 using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
@@ -8,12 +11,14 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 
-namespace CompilerDemo
+namespace CompilerDemo.ViewModel
 {
     class MainWindowViewModel : ViewModelBase
     {
         private string path = string.Empty;
         private string _text;
+        private Lexer _lexer = new Lexer(); 
+        private ObservableCollection<TokenViewModel> _tokenViewModels= new ObservableCollection<TokenViewModel>();
 
         public string Text
         {
@@ -21,6 +26,7 @@ namespace CompilerDemo
             set { _text = value; OnPropertyChanged(); }
         }
 
+        public ICommand ScanCommand { get; }
         public ICommand CreateCommand { get; }
         public ICommand OpenCommand { get; }
         public ICommand SaveCommand { get; }
@@ -32,6 +38,7 @@ namespace CompilerDemo
 
         public MainWindowViewModel()
         {
+            ScanCommand = new RelayCommand(Scan);
             CreateCommand = new RelayCommand(Create);
             OpenCommand = new RelayCommand(TryOpen);
             SaveCommand = new RelayCommand(Save);
@@ -42,6 +49,21 @@ namespace CompilerDemo
             AboutProgramCommand = new RelayCommand(AboutProgram);
         }
 
+        private void Scan()
+        {
+            if (Text == string.Empty)
+            {
+                 return;
+            }
+
+            TokenViewModels.Clear();
+            List<Token> Tokens = _lexer.Scan(Text);
+            foreach (Token token in Tokens)
+            {
+                TokenViewModels.Add(new TokenViewModel(token));
+            }
+            
+        }
         private void Create()
         {
             if (string.IsNullOrWhiteSpace(Text)) return;
@@ -164,7 +186,7 @@ namespace CompilerDemo
         private void Reference()
         {
             var p = new Process();
-            p.StartInfo = new ProcessStartInfo("Reference.html")
+            p.StartInfo = new ProcessStartInfo(@"..\..\..\Reference.html")
             {
                 UseShellExecute = true
             };
@@ -175,6 +197,11 @@ namespace CompilerDemo
             AboutProgramWindow window = new AboutProgramWindow();
             window.DataContext = this;
             window.Show();
+        }
+        public ObservableCollection<TokenViewModel> TokenViewModels
+        {
+            get { return _tokenViewModels; }
+            set { _tokenViewModels = value; OnPropertyChanged(); }
         }
     }  
 }

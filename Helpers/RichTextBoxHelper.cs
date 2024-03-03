@@ -61,7 +61,8 @@ namespace CompilerDemo
                         RichTextBox richTextBox2 = obj2 as RichTextBox;
                         if (richTextBox2 != null)
                         {
-                            SetDocumentXaml(richTextBox, XamlWriter.Save(richTextBox2.Document));
+                            TextRange textRange = new TextRange(richTextBox2.Document.ContentStart, richTextBox2.Document.ContentEnd);
+                            SetDocumentXaml(richTextBox, textRange.Text);
                         }
                     };
                 }

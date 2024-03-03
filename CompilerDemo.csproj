@@ -15,6 +15,7 @@
     <None Remove="Resources\Open.png" />
     <None Remove="Resources\Paste.png" />
     <None Remove="Resources\Redo.png" />
+    <None Remove="Resources\Run.png" />
     <None Remove="Resources\Save.png" />
     <None Remove="Resources\Size.png" />
     <None Remove="Resources\Undo.png" />
@@ -44,6 +45,9 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Redo.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Run.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Save.png">
