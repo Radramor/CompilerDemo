@@ -59,8 +59,16 @@
     <Resource Include="Resources\Undo.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+	  <PackageReference Include="Material.Icons" Version="2.1.6" />
+	  <PackageReference Include="Material.Icons.WPF" Version="2.1.0" />
+	  <PackageReference Include="MaterialDesignExtensions" Version="4.0.0-a02" />
+	  <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
+	  <PackageReference Include="MaterialDesignColors" Version="2.1.4" />
+	  <PackageReference Include="MaterialDesignThemes.MahApps" Version="0.3.0" />
   </ItemGroup>
 
+	
+	
   <ItemGroup>
     <Page Update="View\MainWindow.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>

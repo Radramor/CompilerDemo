@@ -10,12 +10,13 @@ namespace CompilerDemo.Model
     {
         public List<Token> Scan(string code)
         {
-            if (code.Length == 0)
-            {
-                return new List<Token>();
-            }
-
             List<Token> tokens = new List<Token>();
+            
+            if (code == null)
+            {
+                return tokens;
+            }
+            
             int position = 0;
 
             code = code.Replace("\t", "").Replace("\r", "");
@@ -42,12 +43,16 @@ namespace CompilerDemo.Model
             {
                 return Parse(code, position, (c) => !char.IsLetterOrDigit(c) && c != '_');
             }
+            if (char.IsDigit(symbol))
+            {
+                return Parse(code, position, (c) => !char.IsDigit(c) && c != '.');
+            }
             if (symbol == '\"')
             {
                 return ParseString(code, position);
             }
 
-            return ParseParenthesisAndStarOperator(code, position);
+            return ParseCommentSymbols(code, position);
         }
 
         private string Parse(string code, int position, Func<char, bool> stopRule)
@@ -94,24 +99,16 @@ namespace CompilerDemo.Model
             return buffer.ToString();
         }
 
-        private string ParseParenthesisAndStarOperator(string code, int position)
+        private string ParseCommentSymbols(string code, int position)
         {
             string symbol = code[position].ToString();
 
-            string firstCharacter = "()";
-            string secondCharacter = "*";
+            string firstCharacter = "(*";
+            string secondCharacter = "*)";
             string thirdCharacter = "//";
             if (position < code.Length - 1)
             {
-                if (firstCharacter.Contains(symbol) && secondCharacter.Contains(code[position + 1]))
-                {
-                    symbol += code[position + 1];
-                }
-                else if (firstCharacter.Contains(code[position + 1]) && secondCharacter.Contains(symbol))
-                {
-                    symbol += code[position + 1];
-                }
-                else if (symbol + code[position + 1] == thirdCharacter)
+                if (symbol + code[position + 1] == firstCharacter || symbol + code[position + 1] == secondCharacter || symbol + code[position + 1] == thirdCharacter)
                 {
                     symbol += code[position + 1];
                 }

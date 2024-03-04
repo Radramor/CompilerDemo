@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CompilerDemo"
         mc:Ignorable="d"
+        xmlns:materialIcons="clr-namespace:Material.Icons.WPF;assembly=Material.Icons.WPF"
+        Style="{DynamicResource MaterialDesignWindow}"
         Title="Компилятор" Height="450" Width="800"
         MinHeight="450" MinWidth="800">
     <DockPanel>
@@ -44,31 +46,31 @@
 
         <ToolBarTray DockPanel.Dock="Top" Height="65">
             <ToolBar ToolBarTray.IsLocked="True">
-                <Button Width="48" Height="50" ToolTip="Создать" Command="{Binding CreateCommand}" >
+                <Button Width="48" Height="50" ToolTip="Создать" Padding="0" Command="{Binding CreateCommand}" >
                     <Image Source="../Resources/Create.png" Height="40" Width="38"/>
                 </Button>
-                <Button Width="48" Height="50" ToolTip="Открыть" Command="{Binding OpenCommand}">
+                <Button Width="48" Height="50" ToolTip="Открыть" Padding="0" Command="{Binding OpenCommand}">
                     <Image Source="../Resources/Open.png" Height="40" Width="38"/>
                 </Button>
-                <Button Width="48" Height="50" ToolTip="Сохранить" Command="{Binding SaveCommand}">
+                <Button Width="48" Height="50" ToolTip="Сохранить" Padding="0" Command="{Binding SaveCommand}">
                     <Image Source="../Resources/Save.png" Height="40" Width="38"/>
                 </Button>
-                <Button Width="48" Height="50" ToolTip="Отменить" Margin="100 0 0 0" Command="ApplicationCommands.Undo">
+                <Button Width="48" Height="50" ToolTip="Отменить" Margin="100 0 0 0" Padding="0" Command="ApplicationCommands.Undo">
                     <Image Source="../Resources/Undo.png" Height="40" Width="38"/>
                 </Button>
-                <Button Width="48" Height="50" ToolTip="Вернуть" Command="ApplicationCommands.Redo">
+                <Button Width="48" Height="50" ToolTip="Вернуть" Command="ApplicationCommands.Redo" Padding="0">
                     <Image Source="../Resources/Redo.png" Height="40" Width="38"/>
                 </Button>
-                <Button Width="48" Height="50" ToolTip="Запустить" Margin="10 0 10 0" Command="{Binding ScanCommand}">
+                <Button Width="48" Height="50" ToolTip="Запустить" Margin="10 0 10 0" Padding="0" Command="{Binding ScanCommand}">
                     <Image Source="../Resources/Run.png" Height="40" Width="38"/>
                 </Button>
-                <Button Width="48" Height="50" ToolTip="Копировать" Command="ApplicationCommands.Copy">
+                <Button Width="48" Height="50" ToolTip="Копировать" Command="ApplicationCommands.Copy" Padding="0">
                     <Image Source="../Resources/Copy.png" Height="40" Width="38"/>
                 </Button>
-                <Button Width="48" Height="50" ToolTip="Вырезать" Command="ApplicationCommands.Cut">
+                <Button Width="48" Height="50" ToolTip="Вырезать" Command="ApplicationCommands.Cut" Padding="0">
                     <Image Source="../Resources/Cut.png" Height="40" Width="38"/>
                 </Button>
-                <Button Width="48" Height="50" ToolTip="Вставить" Command="ApplicationCommands.Paste">
+                <Button Padding="0" Width="48" Height="50" ToolTip="Вставить" Command="ApplicationCommands.Paste">
                     <Image Source="../Resources/Paste.png" Height="40" Width="38"/>
                 </Button>
                 <Image Source="../Resources/Size.png" Margin="20 0 0 0" Height="40" Width="38"/>

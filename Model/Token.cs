@@ -9,16 +9,16 @@ namespace CompilerDemo.Model
 {
     internal enum TokenType 
     {
-        OpenParenthesisAndStar,
+        OpenParenthesisAndStar = 1,
         CloseParenthesisAndStar,
 
         LeftCurlyBrace,
         RightCurlyBrace,
 
         DoubleForwardSlash,
-        EndLine,
+        NewLine,
 
-        Invalid
+        Text
     }
 
     internal class Token
@@ -30,7 +30,7 @@ namespace CompilerDemo.Model
             { "{", TokenType.LeftCurlyBrace },
             { "}", TokenType.RightCurlyBrace },           
             { "//", TokenType.DoubleForwardSlash },
-            { "\n", TokenType.EndLine },
+            { "\n", TokenType.NewLine },
         };
         public TokenType Type { get; }
         public string RawToken { get; }
@@ -57,7 +57,7 @@ namespace CompilerDemo.Model
                 return DefaultTypes[rawToken];
             }
 
-            return TokenType.Invalid;
+            return TokenType.Text;
         }
     }
 }
