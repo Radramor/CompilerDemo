@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CompilerDemo.ViewModel
 {
-    internal class TokenViewModel : ViewModelBase
+    public class TokenViewModel : ViewModelBase
     {
         private string _code;
         private string _rawToken;
@@ -24,12 +24,12 @@ namespace CompilerDemo.ViewModel
             _endIndex = token.EndPos.ToString();
         }
 
-        public string EndIndex
+        public string EndPos
         {
             get { return _endIndex; }
             set { _endIndex = value; OnPropertyChanged(); }
         }
-        public string StartIndex
+        public string StartPos
         {
             get { return _startIndex; }
             set { _startIndex = value; OnPropertyChanged(); }

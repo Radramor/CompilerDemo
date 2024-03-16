@@ -18,7 +18,10 @@ namespace CompilerDemo.ViewModel
         private string path = string.Empty;
         private string _text;
         private Lexer _lexer = new Lexer(); 
+        private Parser _parser = new Parser();
         private ObservableCollection<TokenViewModel> _tokenViewModels= new ObservableCollection<TokenViewModel>();
+        private ObservableCollection<ParsingError> _parsingError = new ObservableCollection<ParsingError>();
+
 
         public string Text
         {
@@ -26,7 +29,7 @@ namespace CompilerDemo.ViewModel
             set { _text = value; OnPropertyChanged(); }
         }
 
-        public ICommand ScanCommand { get; }
+        public ICommand RunCommand { get; }
         public ICommand CreateCommand { get; }
         public ICommand OpenCommand { get; }
         public ICommand SaveCommand { get; }
@@ -38,7 +41,7 @@ namespace CompilerDemo.ViewModel
 
         public MainWindowViewModel()
         {
-            ScanCommand = new RelayCommand(Scan);
+            RunCommand = new RelayCommand(Run);
             CreateCommand = new RelayCommand(Create);
             OpenCommand = new RelayCommand(TryOpen);
             SaveCommand = new RelayCommand(Save);
@@ -49,6 +52,21 @@ namespace CompilerDemo.ViewModel
             AboutProgramCommand = new RelayCommand(AboutProgram);
         }
 
+        private void Run()
+        {
+            
+            Scan();
+            Parse();
+        }
+        private void Parse()
+        {
+            ParsingErrors.Clear();
+            List<ParsingError> errorList = _parser.Parse(TokenViewModels);
+            foreach (ParsingError error in errorList)
+            {
+                ParsingErrors.Add(error);
+            }
+        }
         private void Scan()
         {
             if (Text == string.Empty)
@@ -202,6 +220,11 @@ namespace CompilerDemo.ViewModel
         {
             get { return _tokenViewModels; }
             set { _tokenViewModels = value; OnPropertyChanged(); }
+        }
+        public ObservableCollection<ParsingError> ParsingErrors
+        {
+            get { return _parsingError; }
+            set { _parsingError = value; OnPropertyChanged(); }
         }
     }  
 }

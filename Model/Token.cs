@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CompilerDemo.Model
 {
-    internal enum TokenType 
+    public enum TokenType 
     {
         OpenParenthesisAndStar = 1,
         CloseParenthesisAndStar,
@@ -21,7 +21,7 @@ namespace CompilerDemo.Model
         Text
     }
 
-    internal class Token
+    public class Token
     {
         private static Dictionary<string, TokenType> DefaultTypes = new Dictionary<string, TokenType>()
         {

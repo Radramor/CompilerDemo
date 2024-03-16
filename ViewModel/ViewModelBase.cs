@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace CompilerDemo.ViewModel
 {
-    class ViewModelBase : INotifyPropertyChanged
+    public class ViewModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
