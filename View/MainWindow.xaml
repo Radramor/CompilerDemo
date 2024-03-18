@@ -81,6 +81,9 @@
                     <ComboBoxItem Content="16"/>
                     <ComboBoxItem Content="18"/>
                 </ComboBox>
+                <Button Padding="0" Width="48" Height="50"  Margin="20 0 0 0" ToolTip="Исправить ошибки парсера" Command="{Binding NeutralizationCommand}">
+                    <Image Source="../Resources/Neutralization.png" Height="40" Width="38"/>
+                </Button>
             </ToolBar>
         </ToolBarTray>
 
@@ -97,8 +100,16 @@
             <GridSplitter Margin="3,3,3,3" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="5"/>
 
             <TabControl Margin="10,10,10,10" Padding="5" Grid.Row="2">
-                <TabItem Header="Вывод">
-                    <TextBox x:Name="TB" IsReadOnly="True" Text="Hello World!"/>
+                <TabItem Header="Вывод парсера" x:Name="ParserTable">
+                    <DataGrid IsReadOnly="True" ItemsSource="{Binding ParsingErrors}" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Номер ошибки" Width="auto" Binding="{Binding NumberOfError}"/>
+                            <DataGridTextColumn Header="Начало" Width="auto" Binding="{Binding StartPos}"/>
+                            <DataGridTextColumn Header="Конец" Width="auto" Binding="{Binding EndPos}"/>
+                            <DataGridTextColumn Header="Сообщение" Width="auto" Binding="{Binding Message}"/>
+                            <DataGridTextColumn Header="Токен" Width="auto" Binding="{Binding ExpectedToken}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </TabItem>
                 <TabItem Header="Вывод анализатора">
                     <DataGrid IsReadOnly="True" ItemsSource="{Binding TokenViewModels}" AutoGenerateColumns="False">
@@ -111,16 +122,8 @@
                         </DataGrid.Columns>
                     </DataGrid>
                 </TabItem>
-                <TabItem Header="Вывод парсера">
-                    <DataGrid IsReadOnly="True" ItemsSource="{Binding ParsingErrors}" AutoGenerateColumns="False">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Номер ошибки" Width="auto" Binding="{Binding NumberOfError}"/>
-                            <DataGridTextColumn Header="Начало" Width="auto" Binding="{Binding StartPos}"/>
-                            <DataGridTextColumn Header="Конец" Width="auto" Binding="{Binding EndPos}"/>
-                            <DataGridTextColumn Header="Сообщение" Width="auto" Binding="{Binding Message}"/>
-                            <DataGridTextColumn Header="Токен" Width="auto" Binding="{Binding ExpectedToken}"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
+                <TabItem Header="Вывод">
+                    <TextBox x:Name="TB" IsReadOnly="True" Text="Hello World!"/>
                 </TabItem>
             </TabControl>
         </Grid>

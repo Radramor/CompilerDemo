@@ -12,6 +12,7 @@
     <None Remove="Resources\Copy.png" />
     <None Remove="Resources\Create.png" />
     <None Remove="Resources\Cut.png" />
+    <None Remove="Resources\Neutralization.png" />
     <None Remove="Resources\Open.png" />
     <None Remove="Resources\Paste.png" />
     <None Remove="Resources\Redo.png" />
@@ -36,6 +37,9 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Cut.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Neutralization.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Open.png">

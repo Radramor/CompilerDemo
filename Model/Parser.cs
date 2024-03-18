@@ -21,6 +21,69 @@ namespace CompilerDemo.Model
             int idx = 0;
             if (tokenViewModels.Count == 0)
             {
+                CreateError("Отсутсвует какой-либо токен", null);
+                return Errors;
+            }
+            while (idx < tokenViewModels.Count)
+            {
+                if (tokenViewModels[idx].RawToken == "(*" || tokenViewModels[idx].RawToken == "{")
+                {
+                    stack.Push(tokenViewModels[idx]);
+                }
+                else if ((tokenViewModels[idx].RawToken == "*)" && stack.Count > 0 && stack.Peek().RawToken == "(*") ||
+                            (tokenViewModels[idx].RawToken == "}" && stack.Count > 0 && stack.Peek().RawToken == "{"))
+                {
+                    stack.Pop();
+                }
+                else if((tokenViewModels[idx].RawToken == "*)" &&  stack.Count == 0) ||
+                            (tokenViewModels[idx].RawToken == "}" && stack.Count == 0))
+                {
+                    CreateError("Лишний токен", tokenViewModels[idx]);
+                    errorNumber++;
+                }
+                else if((tokenViewModels[idx].RawToken == "*)" && stack.Peek().RawToken != "(*") ||
+                            (tokenViewModels[idx].RawToken == "}" && stack.Peek().RawToken != "{"))
+                {
+                    CreateError("Лишний токен", tokenViewModels[idx]);
+                    errorNumber++;
+                }
+                
+                idx++;
+            }
+
+            idx = 0;
+            while (idx < tokenViewModels.Count)
+            {
+                if(tokenViewModels[idx].RawToken == "//")
+                {
+                    int idy = idx + 1;
+                    while (idy < tokenViewModels.Count)
+                    {
+                        if (tokenViewModels[idy].RawToken == "//")
+                        {
+                            CreateError("Лишний токен", tokenViewModels[idx]);
+                            break;
+                        }
+                        else if (tokenViewModels[idy].RawToken == "\n") break;
+                        idy++;
+                    }
+                }
+                idx++;
+            }
+
+            if (stack.Count != 0)
+            {
+                foreach (var i in stack) 
+                {
+                    CreateError("Нет закрывающего токена", i);
+                    errorNumber++;
+                }
+            }
+            return Errors;
+        }
+        private void CreateError(string message, TokenViewModel? token) 
+        {
+            if (token == null)
                 Errors.Add(new ParsingError
                 {
                     NumberOfError = errorNumber,
@@ -29,54 +92,15 @@ namespace CompilerDemo.Model
                     EndPos = 0,
                     ExpectedToken = ""
                 });
-
-                return Errors;
-            }
-            while (idx < tokenViewModels.Count)
-            {
-                if (tokenViewModels[idx].RawToken == "(*" || tokenViewModels[idx].RawToken == "{" || tokenViewModels[idx].RawToken == "//")
+            else 
+                Errors.Add(new ParsingError
                 {
-                    stack.Push(tokenViewModels[idx]);
-                }
-                else if ((tokenViewModels[idx].RawToken == "*)" && stack.Count > 0 && stack.Peek().RawToken == "(*") ||
-                            (tokenViewModels[idx].RawToken == "}" && stack.Count > 0 && stack.Peek().RawToken == "{") ||
-                            (tokenViewModels[idx].RawToken == "\n" && stack.Count > 0 && stack.Peek().RawToken == "//"))
-                {
-                    stack.Pop();
-                }
-                else if((tokenViewModels[idx].RawToken == "*)" && stack.Count == 0) ||
-                            (tokenViewModels[idx].RawToken == "}" && stack.Count == 0))
-                {
-                    Errors.Add(new ParsingError
-                    {
-                        NumberOfError = errorNumber,
-                        Message = $"Лишний токен ",
-                        StartPos = int.Parse(tokenViewModels[idx].StartPos),
-                        EndPos = int.Parse(tokenViewModels[idx].EndPos),
-                        ExpectedToken = tokenViewModels[idx].RawToken
-                    });
-                    errorNumber++;
-                }
-                
-                idx++;
-            }
-
-            if (stack.Count != 0)
-            {
-                foreach (var i in stack) 
-                {
-                    Errors.Add(new ParsingError
-                    {   
-                        NumberOfError = errorNumber,
-                        Message = $"нет закрывающего токена ",
-                        StartPos = int.Parse(i.StartPos),
-                        EndPos = int.Parse(i.EndPos),
-                        ExpectedToken = i.RawToken
-                    });
-                    errorNumber++;
-                }
-            }
-            return Errors;
+                    NumberOfError = errorNumber,
+                    Message = message,
+                    StartPos = int.Parse(token.StartPos),
+                    EndPos = int.Parse(token.EndPos),
+                    ExpectedToken = token.RawToken
+                });
         }
     }
 }

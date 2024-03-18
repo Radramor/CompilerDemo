@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -29,6 +30,7 @@ namespace CompilerDemo.ViewModel
             set { _text = value; OnPropertyChanged(); }
         }
 
+        public ICommand NeutralizationCommand { get; }
         public ICommand RunCommand { get; }
         public ICommand CreateCommand { get; }
         public ICommand OpenCommand { get; }
@@ -41,6 +43,7 @@ namespace CompilerDemo.ViewModel
 
         public MainWindowViewModel()
         {
+            NeutralizationCommand = new RelayCommand(Neutralization);
             RunCommand = new RelayCommand(Run);
             CreateCommand = new RelayCommand(Create);
             OpenCommand = new RelayCommand(TryOpen);
@@ -52,9 +55,18 @@ namespace CompilerDemo.ViewModel
             AboutProgramCommand = new RelayCommand(AboutProgram);
         }
 
-        private void Run()
+        private void Neutralization()
         {
-            
+            while (ParsingErrors.Count > 0)
+            {
+                NeutralizationOfErrors.Neutralization(ParsingErrors, Text);
+                Run();
+            }
+            PrintCountErrors();
+        }
+
+        private void Run()
+        { 
             Scan();
             Parse();
         }
@@ -62,6 +74,7 @@ namespace CompilerDemo.ViewModel
         {
             ParsingErrors.Clear();
             List<ParsingError> errorList = _parser.Parse(TokenViewModels);
+            PrintCountErrors();
             foreach (ParsingError error in errorList)
             {
                 ParsingErrors.Add(error);
@@ -215,6 +228,19 @@ namespace CompilerDemo.ViewModel
             AboutProgramWindow window = new AboutProgramWindow();
             window.DataContext = this;
             window.Show();
+        }
+        public void PrintCountErrors()
+        {
+            if (ParsingErrors.Count == 0)
+            {
+                ((MainWindow)System.Windows.Application.Current.MainWindow).TB.Clear();
+                ((MainWindow)System.Windows.Application.Current.MainWindow).TB.AppendText("Ошибок нет");
+            }
+            else
+            {
+                ((MainWindow)System.Windows.Application.Current.MainWindow).TB.Clear();
+                ((MainWindow)System.Windows.Application.Current.MainWindow).TB.AppendText("Количество ошибок: " + ParsingErrors.Count);
+            }
         }
         public ObservableCollection<TokenViewModel> TokenViewModels
         {
