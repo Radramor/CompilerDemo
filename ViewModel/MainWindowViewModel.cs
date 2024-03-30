@@ -29,7 +29,7 @@ namespace CompilerDemo.ViewModel
             get { return _text; }
             set { _text = value; OnPropertyChanged(); }
         }
-
+        public ICommand RunAndNeutralizationCommand { get; }
         public ICommand NeutralizationCommand { get; }
         public ICommand RunCommand { get; }
         public ICommand CreateCommand { get; }
@@ -40,9 +40,15 @@ namespace CompilerDemo.ViewModel
         public ICommand ExitCommand { get; }
         public ICommand ReferenceCommand { get; }
         public ICommand AboutProgramCommand { get; }
+        public ICommand OpenBibliographyCommand { get; }
+        public ICommand OpenFormulationOfTheProblemCommand { get; }
+        public ICommand OpenGrammaticsCommand { get; }
+        public ICommand OpenMethodCommand { get; }
+
 
         public MainWindowViewModel()
         {
+            RunAndNeutralizationCommand = new RelayCommand(RunAndNeutralization);
             NeutralizationCommand = new RelayCommand(Neutralization);
             RunCommand = new RelayCommand(Run);
             CreateCommand = new RelayCommand(Create);
@@ -52,9 +58,54 @@ namespace CompilerDemo.ViewModel
             DeleteCommand = new RelayCommand(Delete);
             ExitCommand = new RelayCommand(Exit);
             ReferenceCommand = new RelayCommand(Reference);
+            OpenBibliographyCommand = new RelayCommand(OpenBibliography);
+            OpenFormulationOfTheProblemCommand = new RelayCommand(OpenFormulationOfTheProblem);
+            OpenGrammaticsCommand = new RelayCommand(OpenGrammatics);
+            OpenMethodCommand = new RelayCommand(OpenMethod);
             AboutProgramCommand = new RelayCommand(AboutProgram);
         }
 
+        private void OpenBibliography() 
+        {
+            var p = new Process();
+            p.StartInfo = new ProcessStartInfo(@"..\..\..\Bibliography.html")
+            {
+                UseShellExecute = true
+            };
+            p.Start();
+        }
+        private void OpenFormulationOfTheProblem()
+        {
+            var p = new Process();
+            p.StartInfo = new ProcessStartInfo(@"..\..\..\FormulationOfTheProblem.html")
+            {
+                UseShellExecute = true
+            };
+            p.Start();
+        }
+        private void OpenGrammatics()
+        {
+            var p = new Process();
+            p.StartInfo = new ProcessStartInfo(@"..\..\..\Grammatics.html")
+            {
+                UseShellExecute = true
+            };
+            p.Start();
+        }
+        private void OpenMethod() 
+        {
+            var p = new Process();
+            p.StartInfo = new ProcessStartInfo(@"..\..\..\OpenMethod.html")
+            {
+                UseShellExecute = true
+            };
+            p.Start();
+        }
+        private void RunAndNeutralization()
+        {
+            Run();
+            Neutralization();
+        }
         private void Neutralization()
         {
             while (ParsingErrors.Count > 0)
@@ -62,19 +113,19 @@ namespace CompilerDemo.ViewModel
                 NeutralizationOfErrors.Neutralization(ParsingErrors, Text);
                 Run();
             }
-            PrintCountErrors();
+           
         }
 
         private void Run()
         { 
             Scan();
             Parse();
+            PrintCountErrors();
         }
         private void Parse()
         {
             ParsingErrors.Clear();
             List<ParsingError> errorList = _parser.Parse(TokenViewModels);
-            PrintCountErrors();
             foreach (ParsingError error in errorList)
             {
                 ParsingErrors.Add(error);
@@ -234,7 +285,7 @@ namespace CompilerDemo.ViewModel
             if (ParsingErrors.Count == 0)
             {
                 ((MainWindow)System.Windows.Application.Current.MainWindow).TB.Clear();
-                ((MainWindow)System.Windows.Application.Current.MainWindow).TB.AppendText("Ошибок нет");
+                ((MainWindow)System.Windows.Application.Current.MainWindow).TB.AppendText(Text);
             }
             else
             {

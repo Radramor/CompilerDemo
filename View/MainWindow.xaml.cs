@@ -82,5 +82,10 @@ namespace CompilerDemo
             }
         }
 
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            RTB.Document.Blocks.Clear();
+            RTB.AppendText("(* // *) {}");
+        }
     }
 }

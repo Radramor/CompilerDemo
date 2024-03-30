@@ -28,13 +28,13 @@
                 <MenuItem Header="Выделить все" Command="ApplicationCommands.SelectAll"/>
             </MenuItem>
             <MenuItem Header="Текст">
-                <MenuItem Header="Постановка задачи"/>
-                <MenuItem Header="Грамматика"/>
-                <MenuItem Header="Классификация грамматики"/>
-                <MenuItem Header="Метод анализа"/>
-                <MenuItem Header="Диагностика и нейтрализация ошибок"/>
-                <MenuItem Header="Тестовый пример"/>
-                <MenuItem Header="Список литературы"/>
+                <MenuItem Header="Постановка задачи" Command="{Binding OpenFormulationOfTheProblemCommand}"/>
+                <MenuItem Header="Грамматика" Command="{Binding OpenGrammaticsCommand}"/>
+                <MenuItem Header="Классификация грамматики" Command="{Binding OpenGrammaticsCommand}"/>
+                <MenuItem Header="Метод анализа" Command="{Binding OpenMethodCommand}" />
+                <MenuItem Header="Диагностика и нейтрализация ошибок" Command="{Binding RunAndNeutralizationCommand}"/>
+                <MenuItem Header="Тестовый пример" Click="MenuItem_Click"/>
+                <MenuItem Header="Список литературы" Command="{Binding OpenBibliographyCommand}"/>
                 <MenuItem Header="Исходный код программы"/>
             </MenuItem>
             <MenuItem Header="Пуск"/>
