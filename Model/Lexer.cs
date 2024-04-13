@@ -10,11 +10,11 @@ namespace CompilerDemo.Model
     {
         public List<Token> Scan(string code)
         {
-            List<Token> tokens = new List<Token>();
+            List<Token> _tokens = new List<Token>();
             
             if (code == null)
             {
-                return tokens;
+                return _tokens;
             }
             
             int position = 0;
@@ -24,12 +24,12 @@ namespace CompilerDemo.Model
             do
             {
                 string rawToken = ParseToken(code, position);
-                tokens.Add(new Token(rawToken, position));
+                _tokens.Add(new Token(rawToken, position));
                 position += rawToken.Length;
 
             } while (position < code.Length);
 
-            return tokens;
+            return _tokens;
         }
 
         private string ParseToken(string code, int position)

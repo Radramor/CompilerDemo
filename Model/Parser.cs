@@ -51,26 +51,6 @@ namespace CompilerDemo.Model
                 idx++;
             }
 
-            idx = 0;
-            while (idx < tokenViewModels.Count)
-            {
-                if(tokenViewModels[idx].RawToken == "//")
-                {
-                    int idy = idx + 1;
-                    while (idy < tokenViewModels.Count)
-                    {
-                        if (tokenViewModels[idy].RawToken == "//")
-                        {
-                            CreateError("Лишний токен", tokenViewModels[idx]);
-                            break;
-                        }
-                        else if (tokenViewModels[idy].RawToken == "\n") break;
-                        idy++;
-                    }
-                }
-                idx++;
-            }
-
             if (stack.Count != 0)
             {
                 foreach (var i in stack) 

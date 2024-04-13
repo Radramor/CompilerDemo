@@ -20,7 +20,10 @@ namespace CompilerDemo.ViewModel
         private string _text;
         private Lexer _lexer = new Lexer(); 
         private Parser _parser = new Parser();
-        private ObservableCollection<TokenViewModel> _tokenViewModels= new ObservableCollection<TokenViewModel>();
+        private List<Token> _tokens = new List<Token>();
+        private TetradsViewModel _tetradsViewModel = new TetradsViewModel();
+        private ObservableCollection<Tetrads> _tetrads = new ObservableCollection<Tetrads>();
+        private ObservableCollection<TokenViewModel> _tokenViewModels = new ObservableCollection<TokenViewModel>();
         private ObservableCollection<ParsingError> _parsingError = new ObservableCollection<ParsingError>();
 
 
@@ -121,6 +124,18 @@ namespace CompilerDemo.ViewModel
             Scan();
             Parse();
             PrintCountErrors();
+            CreateTetrads();
+        }
+
+        private void CreateTetrads()
+        {
+            Tetrads.Clear();
+            _tetradsViewModel = new TetradsViewModel();
+            List<Tetrads> tetradsList = _tetradsViewModel.CreateTetrads(_tokens.ToList());
+            foreach (Tetrads tetrads in tetradsList)
+            {
+                Tetrads.Add(tetrads);
+            }
         }
         private void Parse()
         {
@@ -139,8 +154,8 @@ namespace CompilerDemo.ViewModel
             }
 
             TokenViewModels.Clear();
-            List<Token> Tokens = _lexer.Scan(Text);
-            foreach (Token token in Tokens)
+            _tokens = _lexer.Scan(Text);
+            foreach (Token token in _tokens)
             {
                 TokenViewModels.Add(new TokenViewModel(token));
             }
@@ -160,11 +175,13 @@ namespace CompilerDemo.ViewModel
                         path = saveFileDialog.FileName;
                         File.WriteAllText(path, Text);
                         Text = string.Empty;
+                        InsertText();
                     }
                     break;
 
                 case MessageBoxResult.No:
                     Text = string.Empty;
+                    InsertText();
                     break;
 
                 case MessageBoxResult.Cancel:
@@ -218,11 +235,13 @@ namespace CompilerDemo.ViewModel
 
                         File.WriteAllText(path, Text);
                         Text = string.Empty;
+                        InsertText();
                         Open();
                         break;
 
                     case MessageBoxResult.No:
                         Text = string.Empty;
+                        InsertText();
                         Open();
                         break;
 
@@ -243,6 +262,7 @@ namespace CompilerDemo.ViewModel
                 path = openFileDialog.FileName;
                 string buffer = File.ReadAllText(path);
                 Text = buffer;
+                InsertText();
             }
         }
         private void SaveAs()
@@ -293,6 +313,12 @@ namespace CompilerDemo.ViewModel
                 ((MainWindow)System.Windows.Application.Current.MainWindow).TB.AppendText("Количество ошибок: " + ParsingErrors.Count);
             }
         }
+
+        private void InsertText()
+        {
+            ((MainWindow)System.Windows.Application.Current.MainWindow).RTB.Document.Blocks.Clear();
+            ((MainWindow)System.Windows.Application.Current.MainWindow).RTB.AppendText(Text);
+        }
         public ObservableCollection<TokenViewModel> TokenViewModels
         {
             get { return _tokenViewModels; }
@@ -302,6 +328,12 @@ namespace CompilerDemo.ViewModel
         {
             get { return _parsingError; }
             set { _parsingError = value; OnPropertyChanged(); }
+        }
+
+        public ObservableCollection<Tetrads> Tetrads
+        {
+            get { return _tetrads; }
+            set { _tetrads = value; OnPropertyChanged(); }
         }
     }  
 }

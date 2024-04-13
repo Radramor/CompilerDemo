@@ -17,17 +17,17 @@ namespace CompilerDemo.ViewModel
             if (ParsingErrors.Count == 0) return;
             while (ParsingErrors.Count > 0)
             {
-                switch (ParsingErrors.Last().ExpectedToken)
+                switch (ParsingErrors.First().ExpectedToken)
                 {
                     case "{":
                         textBuff += "}";
-                        ParsingErrors.Remove(ParsingErrors.Last());
+                        ParsingErrors.Remove(ParsingErrors.First());
                         insertText(textBuff);
                         return;
 
                     case "(*":
                         textBuff += "*)";
-                        ParsingErrors.Remove(ParsingErrors.Last());
+                        ParsingErrors.Remove(ParsingErrors.First());
                         insertText(textBuff);
                         return;
 
@@ -35,8 +35,8 @@ namespace CompilerDemo.ViewModel
                         break;
                     // }, *), //
                     default:
-                        textBuff = textBuff.Remove(ParsingErrors.Last().StartPos, ParsingErrors.Last().EndPos - ParsingErrors.Last().StartPos);
-                        ParsingErrors.Remove(ParsingErrors.Last());
+                        textBuff = textBuff.Remove(ParsingErrors.First().StartPos, ParsingErrors.First().EndPos - ParsingErrors.First().StartPos);
+                        ParsingErrors.Remove(ParsingErrors.First());
                         insertText(textBuff);
                         return;
                 }
