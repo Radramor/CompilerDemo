@@ -258,9 +258,9 @@
   
   <h3>Тестовые примеры</h3>
   <h4>Тест №1 Пример без ошибок.</h4>
-  <img src="Readme//Tetrad.png" alt="Тест">
+  <img src="Readme//Tetrad.PNG" alt="Тест">
   <h4>Тест №2 Пример с ошибокой.</h4>
-  <img src="Readme//Tetrad1.png" alt="Тест-Ошибка">
+  <img src="Readme//Tetrad1.PNG" alt="Тест-Ошибка">
 
 </body>
 </html>
