@@ -11,6 +11,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Text.RegularExpressions;
+using System.Text;
 
 namespace CompilerDemo.ViewModel
 {
@@ -47,7 +49,7 @@ namespace CompilerDemo.ViewModel
         public ICommand OpenFormulationOfTheProblemCommand { get; }
         public ICommand OpenGrammaticsCommand { get; }
         public ICommand OpenMethodCommand { get; }
-
+        public ICommand FindSubstringsCommand { get; }
 
         public MainWindowViewModel()
         {
@@ -68,6 +70,19 @@ namespace CompilerDemo.ViewModel
             AboutProgramCommand = new RelayCommand(AboutProgram);
         }
 
+        private ObservableCollection<MatchResult> _matchResults = new ObservableCollection<MatchResult>();
+
+        public ObservableCollection<MatchResult> MatchResults
+        {
+            get { return _matchResults; }
+            set { _matchResults = value; OnPropertyChanged(); }
+        }
+
+        public class MatchResult
+        {
+            public string Substring { get; set; }
+            public int Position { get; set; }
+        }
         private void OpenBibliography() 
         {
             var p = new Process();
@@ -124,7 +139,10 @@ namespace CompilerDemo.ViewModel
             Scan();
             Parse();
             PrintCountErrors();
-            CreateTetrads();
+            if (ParsingErrors.Count == 0)
+                CreateTetrads();
+            else
+                Tetrads.Clear();
         }
 
         private void CreateTetrads()
@@ -287,18 +305,103 @@ namespace CompilerDemo.ViewModel
 
         private void Reference()
         {
-            var p = new Process();
-            p.StartInfo = new ProcessStartInfo(@"..\..\..\Reference.html")
+            Process.Start(new ProcessStartInfo
             {
+                FileName = "https://github.com/Radramor/CompilerDemo",
                 UseShellExecute = true
-            };
-            p.Start();
+            });
         }
         private void AboutProgram()
         {
             AboutProgramWindow window = new AboutProgramWindow();
             window.DataContext = this;
             window.Show();
+        }
+        public void FindMatchingSubstrings(string text, string pattern)
+        {
+            MatchResults.Clear();
+
+            if (string.IsNullOrEmpty(text))
+            {
+                MatchResults.Add(new MatchResult { Substring = "Текст не введен.", Position = -1 });
+                return;
+            }
+
+            Regex regex = new Regex(pattern);
+            MatchCollection matches = regex.Matches(text);
+
+            if (matches.Count > 0)
+            {
+                foreach (Match match in matches)
+                {
+                    MatchResults.Add(new MatchResult { Substring = match.Value, Position = match.Index });
+                }
+            }
+            else
+            {
+                MatchResults.Add(new MatchResult { Substring = "Совпадений не найдено.", Position = 0 });
+            }
+        }
+
+        public void FindIdentifier()
+        {
+            string text = Text;
+            string pattern = @"[$a-zA-Z_][a-zA-Z]*";
+
+            FindMatchingSubstrings(text, pattern);
+        }
+
+        public void FindUserName()
+        {
+            string text = Text;
+            /*string pattern = @"\b[a-z0-9_-]{5,20}\b"*/;
+            string pattern = @"\d";
+
+            FindMatchingSubstrings(text, pattern);
+        }
+
+        public void FindIPv6()
+        {
+            string text = Text;
+            string pattern = @"(" +
+                             @"([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|" +
+                             @"::(ffff(:0{1,4}){0,1}:){0,1}" +
+                             @"((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}" +
+                             @"(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|" +
+                             @"([0-9a-fA-F]{1,4}:){1,4}:" +
+                             @"((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}" +
+                             @"(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|" +
+                             @"([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|" +
+                             @"([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|" +
+                             @"([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|" +
+                             @"([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|" +
+                             @"([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|" +
+                             @"[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|" +
+                             @":((:[0-9a-fA-F]{1,4}){1,7}|:)|" +
+                             @"fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,2}|" +
+                             @"([0-9a-fA-F]{1,4}:){1,7}:" +
+                             @")"
+
+            /*string pattern = @"\b((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|" +
+                             @"(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|" +
+                             @"((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.|\b)){4}|:))|" +
+                             @"(([0-9A-Fa-f]{1,4}:){5}((:[0-9A-Fa-f]{1,4}){1,2}|" +
+                             @":((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.|\b)){4}|:))|" +
+                             @"(([0-9A-Fa-f]{1,4}:){4}((:[0-9A-Fa-f]{1,4}){1,3}|" +
+                             @":((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.|\b)){4}|:))|" +
+                             @"(([0-9A-Fa-f]{1,4}:){3}((:[0-9A-Fa-f]{1,4}){1,4}|" +
+                             @":((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.|\b)){4}|:))|" +
+                             @"(([0-9A-Fa-f]{1,4}:){2}((:[0-9A-Fa-f]{1,4}){1,5}|" +
+                             @":((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.|\b)){4}|:))|" +
+                             @"(([0-9A-Fa-f]{1,4}:){1}((:[0-9A-Fa-f]{1,4}){1,6}|" +
+                             @":((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.|\b)){4}|:))|" +
+                             @"(:((:[0-9A-Fa-f]{1,4}){1,7}|" +
+                             @":((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.|\b)){4}|:)))(%[\d\w]{1,})?\b"*/
+
+            
+            ;
+
+            FindMatchingSubstrings(text, pattern);
         }
         public void PrintCountErrors()
         {

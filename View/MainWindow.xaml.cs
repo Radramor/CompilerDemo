@@ -87,5 +87,19 @@ namespace CompilerDemo
             RTB.Document.Blocks.Clear();
             RTB.AppendText("(* // *) {}");
         }
+        private void FindIdentifier_Click(object sender, RoutedEventArgs e)
+        {
+            ((MainWindowViewModel)DataContext).FindIdentifier();
+        }
+
+        private void FindUserName_Click(object sender, RoutedEventArgs e)
+        {
+            ((MainWindowViewModel)DataContext).FindUserName();
+        }
+
+        private void FindIPv6_Click(object sender, RoutedEventArgs e)
+        {
+            ((MainWindowViewModel)DataContext).FindIPv6();
+        }
     }
 }

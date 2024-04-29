@@ -37,10 +37,15 @@
                 <MenuItem Header="Список литературы" Command="{Binding OpenBibliographyCommand}"/>
                 <MenuItem Header="Исходный код программы"/>
             </MenuItem>
-            <MenuItem Header="Пуск"/>
+            <MenuItem Header="Пуск" Command="{Binding RunCommand}"/>
             <MenuItem Header="Справка">
                 <MenuItem Header="Вызов справки" Command="{Binding ReferenceCommand}"/>
                 <MenuItem Header="О программе" Command="{Binding AboutProgramCommand}"/>
+            </MenuItem>
+            <MenuItem Header="Найти подстроки">
+                <MenuItem Header="Идентификатор" Click="FindIdentifier_Click"/>
+                <MenuItem Header="Имя пользователя" Click="FindUserName_Click"/>
+                <MenuItem Header="IP-адрес (v6)" Click="FindIPv6_Click"/>
             </MenuItem>
         </Menu>
 
@@ -129,6 +134,14 @@
                             <DataGridTextColumn Header="Первый операнд" Width="*" Binding="{Binding Arg1}"/>
                             <DataGridTextColumn Header="Второй операнд" Width="*" Binding="{Binding Arg2}"/>
                             <DataGridTextColumn Header="Результат" Width="*" Binding="{Binding Result}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </TabItem>
+                <TabItem Header="Вывод РВ">
+                    <DataGrid x:Name="OutputDataGrid" ItemsSource="{Binding MatchResults}" IsReadOnly="True" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Найденная подстрока:" Binding="{Binding Substring}"/>
+                            <DataGridTextColumn Header="Позиция:" Binding="{Binding Position}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </TabItem>

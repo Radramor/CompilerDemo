@@ -26,23 +26,26 @@ namespace CompilerDemo.Model
             }
             while (idx < tokenViewModels.Count)
             {
-                if (tokenViewModels[idx].RawToken == "(*" || tokenViewModels[idx].RawToken == "{")
+                if (tokenViewModels[idx].RawToken == "(*" || tokenViewModels[idx].RawToken == "{" || tokenViewModels[idx].RawToken == "(")
                 {
                     stack.Push(tokenViewModels[idx]);
                 }
                 else if ((tokenViewModels[idx].RawToken == "*)" && stack.Count > 0 && stack.Peek().RawToken == "(*") ||
-                            (tokenViewModels[idx].RawToken == "}" && stack.Count > 0 && stack.Peek().RawToken == "{"))
+                            (tokenViewModels[idx].RawToken == "}" && stack.Count > 0 && stack.Peek().RawToken == "{") ||
+                            (tokenViewModels[idx].RawToken == ")" && stack.Count > 0 && stack.Peek().RawToken == "("))
                 {
                     stack.Pop();
                 }
                 else if((tokenViewModels[idx].RawToken == "*)" &&  stack.Count == 0) ||
-                            (tokenViewModels[idx].RawToken == "}" && stack.Count == 0))
+                            (tokenViewModels[idx].RawToken == "}" && stack.Count == 0) ||
+                            (tokenViewModels[idx].RawToken == ")" && stack.Count == 0))
                 {
                     CreateError("Лишний токен", tokenViewModels[idx]);
                     errorNumber++;
                 }
                 else if((tokenViewModels[idx].RawToken == "*)" && stack.Peek().RawToken != "(*") ||
-                            (tokenViewModels[idx].RawToken == "}" && stack.Peek().RawToken != "{"))
+                            (tokenViewModels[idx].RawToken == "}" && stack.Peek().RawToken != "{") ||
+                            (tokenViewModels[idx].RawToken == ")" && stack.Peek().RawToken != "("))
                 {
                     CreateError("Лишний токен", tokenViewModels[idx]);
                     errorNumber++;

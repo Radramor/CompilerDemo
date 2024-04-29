@@ -47,6 +47,7 @@ namespace CompilerDemo.Model
             {
                 return Parse(code, position, (c) => !char.IsDigit(c) && c != '.');
             }
+            
             if (symbol == '\"')
             {
                 return ParseString(code, position);
