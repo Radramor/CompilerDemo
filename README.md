@@ -291,7 +291,7 @@
     $_dollar<br>
     Test_Case<br>
     a123456<br>
-    <img src="html/Test1.png" alt="Тест1">
+    <img src="Readme//RV1.PNG" alt="Тест1">
   </p>
 
   <p>
@@ -316,7 +316,7 @@
     abcdefghijklmnopqrst<br>
     abcde_12345<br>
     john_doe_123<br>
-    <img src="html/Test2.png" alt="Тест2">
+    <img src="Readme//RV2.PNG" alt="Тест2">
   </p>
 
   <p>
@@ -362,7 +362,7 @@
     ::1<br>
     fe80::5708:8e26:6c32:d06f%13<br>
 </pre>
-    <img src="html/Test3.png" alt="Тест3">
+    <img src="Readme//RV3.PNG" alt="Тест3">
   
 
 </body>
