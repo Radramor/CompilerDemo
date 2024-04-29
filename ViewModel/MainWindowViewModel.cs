@@ -354,8 +354,7 @@ namespace CompilerDemo.ViewModel
         public void FindUserName()
         {
             string text = Text;
-            /*string pattern = @"\b[a-z0-9_-]{5,20}\b"*/;
-            string pattern = @"\d";
+            string pattern = @"\b[a-z0-9_-]{5,20}\b";
 
             FindMatchingSubstrings(text, pattern);
         }
